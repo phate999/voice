@@ -355,7 +355,7 @@ try:
 
     data = load_settings('voice')
     GPT_model = data["GPT_model"]
-    openai.api_key = data["openai_key"]
+    openai.api_key = data["openai.key"]
     pv_access_key = data["pv_access_key"]
 
     client = OpenAI(api_key=openai.api_key)
