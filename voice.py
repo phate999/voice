@@ -375,7 +375,7 @@ try:
             else:
                 pass
             count += 1
-            voice("Go for Cradlepoint.")
+            voice("Say Cradlepoint to ask a question.")
             wake_word()
             Thread(target=wake_LEDs).start()
             # comment out the next line if you do not want Cradlepoint to verbally respond to his name
