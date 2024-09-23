@@ -376,9 +376,7 @@ try:
             else:
                 pass
             count += 1
-            t4 = threading.Thread(target=voice, args=("Go for Cradlepoint.",))
-            t4.start()
-            t4.join()
+            voice("Go for Cradlepoint.")
             wake_word()
             Thread(target=wake_LEDs).start()
             # comment out the next line if you do not want Cradlepoint to verbally respond to his name
