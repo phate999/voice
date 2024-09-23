@@ -45,13 +45,12 @@ defaults = {
     "pv_access_key": "Your Picovoice Access Key"
 }
 
-prompt = ["Go for Cradlepoint.",
+prompt = ["Cradlepoint here!",
           "How may I assist you?",
           "How may I help?",
           "What can I do for you?",
           "Ask me anything.",
           "Yes?",
-          "Cradlepoint here.",
           "I'm listening.",
           "What would you like me to do?"]
 
