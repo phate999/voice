@@ -64,20 +64,6 @@ solid_bar = {"LED_BAR_0": 1, "LED_BAR_1": 1, "LED_BAR_2": 1, "LED_BAR_3": 1, "LE
          "LED_BAR_6": 1, "LED_BAR_7": 1, "LED_BAR_8": 1, "LED_BAR_9": 1, "LED_BAR_10": 1, "LED_BAR_11": 1,
          "LED_BAR_12": 1, "LED_BAR_13": 1, "LED_BAR_14": 1}
 
-# Cradlepoint will 'remember' earlier queries so that it has greater continuity in its response
-# the following will delete that 'memory' three minutes after the start of the conversation
-def append_clear_countdown():
-    sleep(180)
-    global chat_log
-    chat_log.clear()
-    chat_log = [
-        {"role": "system", "content": "Your name is Cradlepoint. You do not have a namesake. You are a helpful assistant."},
-    ]
-    global count
-    count = 0
-    t_count.join()
-
-
 def ChatGPT(query):
     user_query = [
         {"role": "user", "content": query},
@@ -362,19 +348,12 @@ try:
     o = create(access_key=pv_access_key)
 
     event = threading.Event()
-    count = 0
 
     while True:
 
         try:
 
             Chat = 1
-            if count == 0:
-                t_count = threading.Thread(target=append_clear_countdown)
-                t_count.start()
-            else:
-                pass
-            count += 1
             voice("Say Cradlepoint to ask a question.")
             wake_word()
             Thread(target=wake_LEDs).start()
