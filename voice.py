@@ -75,7 +75,7 @@ def append_clear_countdown():
     ]
     global count
     count = 0
-    t_count.join
+    t_count.join()
 
 
 def ChatGPT(query):
