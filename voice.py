@@ -427,7 +427,18 @@ try:
             o.delete
             recorder = None
             break
+          
+        except Exception as e:
+            print(f"Exception in App: {e}")
+            event.set()
+            recorder.stop()
+            o.delete
+            recorder = None
+            break
 
 except KeyboardInterrupt:
     print("\nExiting ChatGPT Virtual Assistant")
+    o.delete
+except Exception as e:
+    print(f"Exception in main app: {e}")
     o.delete
