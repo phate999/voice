@@ -356,13 +356,15 @@ try:
             Chat = 1
             voice("Say Cradlepoint to ask a question.")
             wake_word()
-            Thread(target=wake_LEDs).start()
+            wake_leds_thread = Thread(target=wake_LEDs)
+            wake_leds_thread.start()
             # comment out the next line if you do not want Cradlepoint to verbally respond to his name
             voice(random.choice(prompt))
             recorder = Recorder()
             recorder.start()
             listen()
             detect_silence()
+            wake_leds_thread.join()
             thinking = True
             think = Thinker()
             t3 = threading.Thread(target=think.start)
