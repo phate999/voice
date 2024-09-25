@@ -54,15 +54,15 @@ prompt = ["Cradlepoint here!",
           "I'm listening.",
           "What would you like me to do?"]
 
-
 chat_log = [
     {"role": "system",
      "content": "Your name is Cradlepoint. You do not have a namesake. You are a helpful AI-based assistant."},
 ]
 
 solid_bar = {"LED_BAR_0": 1, "LED_BAR_1": 1, "LED_BAR_2": 1, "LED_BAR_3": 1, "LED_BAR_4": 1, "LED_BAR_5": 1,
-         "LED_BAR_6": 1, "LED_BAR_7": 1, "LED_BAR_8": 1, "LED_BAR_9": 1, "LED_BAR_10": 1, "LED_BAR_11": 1,
-         "LED_BAR_12": 1, "LED_BAR_13": 1, "LED_BAR_14": 1}
+             "LED_BAR_6": 1, "LED_BAR_7": 1, "LED_BAR_8": 1, "LED_BAR_9": 1, "LED_BAR_10": 1, "LED_BAR_11": 1,
+             "LED_BAR_12": 1, "LED_BAR_13": 1, "LED_BAR_14": 1}
+
 
 def ChatGPT(query):
     user_query = [
@@ -114,6 +114,7 @@ def detect_silence():
                 last_voice_time = None
                 break
 
+
 def listen():
     cobra = pvcobra.create(access_key=pv_access_key)
 
@@ -138,6 +139,7 @@ def listen():
             listen_audio_stream.close()
             cobra.delete()
             break
+
 
 def responseprinter(chat):
     wrapper = textwrap.TextWrapper(width=70)  # Adjust the width to your preference
@@ -178,7 +180,7 @@ def wake_word():
     wake_pa = pyaudio.PyAudio()
 
     porcupine_audio_stream = wake_pa.open(
-        rate=16000,
+        rate=porcupine.sample_rate,
         channels=1,
         format=pyaudio.paInt16,
         input=True,
@@ -189,13 +191,12 @@ def wake_word():
     Detect = True
 
     while Detect:
-        porcupine_pcm = porcupine_audio_stream.read(porcupine.frame_length)
+        porcupine_pcm = porcupine_audio_stream.read(porcupine.frame_length, exception_on_overflow=False)
         porcupine_pcm = struct.unpack_from("h" * porcupine.frame_length, porcupine_pcm)
 
         porcupine_keyword_index = porcupine.process(porcupine_pcm)
 
         if porcupine_keyword_index >= 0:
-
             print("\nWake word detected\n")
             current_time()
             porcupine_audio_stream.stop_stream
@@ -234,6 +235,7 @@ class Recorder(Thread):
             pass
 
         return self._pcm
+
 
 def wake_LEDs():
     time.sleep(1)
@@ -282,9 +284,11 @@ def wake_LEDs():
         cp.put('control/gpio', leds[8])
         time.sleep(.3)
 
+
 class Thinker:
     def __init__(self):
         self.thinking = True
+
     def start(self):
         leds = {}
         for i in range(14, -1, -1):
@@ -295,7 +299,7 @@ class Thinker:
             for i in range(0, 15, 1):
                 leds[f"LED_BAR_{i}"] = 1
                 if i > 0:
-                    leds[f"LED_BAR_{i-1}"] = 0
+                    leds[f"LED_BAR_{i - 1}"] = 0
                 cp.put('control/gpio', leds)
                 time.sleep(0.05)
             for i in range(14, -1, -1):
@@ -308,6 +312,7 @@ class Thinker:
             leds[f"LED_BAR_{i}"] = 1
             cp.put('control/gpio', leds)
             time.sleep(.01)
+
 
 def network_status():
     connection_state = cp.get('status/wan/connection_state')
@@ -322,6 +327,7 @@ def network_status():
         res = f"The router is currently {connection_state} on {primary_device}. Net cloud is {nc_state}."
     return res
 
+
 def load_settings(name):
     """Load settings from SDK Appdata"""
     try:
@@ -332,6 +338,7 @@ def load_settings(name):
         cp.post('config/system/sdk/appdata', {"name": name, "value": json.dumps(defaults)})
         data = defaults
     return data
+
 
 try:
     cp = EventingCSClient('Voice')
@@ -427,7 +434,7 @@ try:
             o.delete
             recorder = None
             break
-          
+
         except Exception as e:
             print(f"Exception in App: {e}")
             event.set()
