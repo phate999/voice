@@ -178,7 +178,7 @@ def wake_word():
     wake_pa = pyaudio.PyAudio()
 
     porcupine_audio_stream = wake_pa.open(
-        rate=16000.0,
+        rate=16000,
         channels=1,
         format=pyaudio.paInt16,
         input=True,
